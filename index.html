@@ -2,11 +2,20 @@
 <html>
 <head>
     <title>Jungle Sim</title>
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="base.css">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-<script src="./main.js" type="module">
+<div id="root-window">
+    <div id="render-target"></div>
+</div>
+
+<script type="module">
+    import {createScene} from "./src/scene.js";
+    window.onload = () => {
+        window.scene = createScene();
+        window.scene.start();
+    }
 </script>
 </body>
 </html>
