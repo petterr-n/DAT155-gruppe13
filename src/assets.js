@@ -10,35 +10,29 @@ const assets = {
         mesh.position.set(x, -0.5, y);
         return mesh;
     },
-    'residential': (x, y) => {
-        const material = new THREE.MeshLambertMaterial({color: 0x00ff00});
+    'building-1': (x, y) => {
+        const material = new THREE.MeshLambertMaterial({color: 0x777777});
         const mesh = new THREE.Mesh(geometry, material);
-        mesh.userData = { id: 'residential', x, y};
+        mesh.userData = { id: 'building-1', x, y};
         mesh.position.set(x, 0.5, y);
         return mesh;
     },
-    'commercial': (x, y) => {
-        const material = new THREE.MeshLambertMaterial({color: 0x0000ff});
+    'building-2': (x, y) => {
+        const material = new THREE.MeshLambertMaterial({color: 0x777777});
         const mesh = new THREE.Mesh(geometry, material);
-        mesh.userData = { id: 'commercial', x, y};
-        mesh.position.set(x, 0.5, y);
+        mesh.scale.set(1, 2, 1);
+        mesh.userData = { id: 'building-2', x, y};
+        mesh.position.set(x, 1, y);
         return mesh;
     },
-    'industrial': (x, y) => {
-        const material = new THREE.MeshLambertMaterial({color: 0xffff00});
+    'building-3': (x, y) => {
+        const material = new THREE.MeshLambertMaterial({color: 0x777777});
         const mesh = new THREE.Mesh(geometry, material);
-        mesh.userData = { id: 'industrial', x, y};
-        mesh.position.set(x, 0.5, y);
+        mesh.scale.set(1, 3, 1);
+        mesh.userData = { id: 'building-3', x, y};
+        mesh.position.set(x, 1.5, y);
         return mesh;
-    },
-    'road': (x, y) => {
-        const material = new THREE.MeshLambertMaterial({color: 0x444440});
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.userData = { id: 'road', x, y};
-        mesh.scale.set(1, 0.1, 1);
-        mesh.position.set(x, 0.05, y);
-        return mesh;
-    },
+    }
 }
 
 export function createAssetInstance(assetId, x, y) {
