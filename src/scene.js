@@ -44,15 +44,13 @@ export function createScene() {
             for (let y = 0; y < jungle.size; y++) {
                 const currentBuildingId = buildings[x][y]?.userData.id;
                 const newBuildingId = jungle.data[x][y].buildingId;
-
                 // If player removes a building
                 if (!newBuildingId && currentBuildingId) {
                     scene.remove(buildings[x][y]);
                     buildings[x][y] = undefined;
                 }
-
                 // If data model has changed
-                if (newBuildingId !== currentBuildingId) {
+                if (newBuildingId && newBuildingId !== currentBuildingId) {
                     scene.remove(buildings[x][y]);
                     buildings[x][y] = createAssetInstance(newBuildingId, x, y);
                     scene.add(buildings[x][y]);
