@@ -2,16 +2,25 @@ import {createScene} from "./scene.js";
 import {createJungle} from "./jungle.js";
 
 export function createGame() {
+        let activeToolId = '';
         const scene = createScene();
         const jungle = createJungle(16);
 
         scene.initialize(jungle);
         scene.onObjectSelected = (selectedObject) => {
-            console.log(selectedObject);
 
             let {x, y} = selectedObject.userData;
             const tile = jungle.data[x][y];
-            console.log(tile);
+
+            if (activeToolId === 'bulldoze') {
+                // remove building
+                tile.buildingId = undefined;
+                scene.update(jungle);
+            } else if (!tile.buildingId) {
+                // place building
+                tile.buildingId = activeToolId;
+                scene.update(jungle);
+            }
         }
 
         window.scene = scene;
@@ -24,7 +33,11 @@ export function createGame() {
             update() {
                 jungle.update();
                 scene.update(jungle);
-            }
+            },
+            setActiveToolId(toolId) {
+                activeToolId = toolId;
+                console.log(activeToolId);
+            },
         }
 
         setInterval(() => {
