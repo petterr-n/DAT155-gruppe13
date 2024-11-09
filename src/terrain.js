@@ -29,6 +29,26 @@ export function createTerrain(scene) {
         // Lag mesh for terrenget og legg til scenen
         const material = new THREE.MeshLambertMaterial({ color: 0x88ccee, wireframe: false });
         const terrain = new THREE.Mesh(geometry, material);
+        terrain.name = 'terrain';
         scene.add(terrain);
     });
+}
+
+// Function to calculate height at specific coordinates on the terrain (using terrain geometry)
+export function getHeightAt(x, z, scene) {
+    const terrain = scene.getObjectByName('terrain'); // Retrieve the terrain by its name
+
+    if (!terrain) {
+        console.error("Terrain not found in the scene!");
+        return 0; // Return a default height (0) if terrain is missing
+    }
+
+    const position = terrain.geometry.attributes.position;
+    const size = Math.sqrt(position.count); // Assuming square geometry
+
+    const gridX = Math.floor((x + 100) / 200 * (size - 1));
+    const gridZ = Math.floor((z + 100) / 200 * (size - 1));
+
+    const index = gridZ * size + gridX;
+    return position.getZ(index);
 }
