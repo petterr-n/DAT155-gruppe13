@@ -4,9 +4,9 @@ export function createTerrain(scene) {
     const loader = new THREE.TextureLoader();
 
     loader.load('images/heightmap.png', (texture) => {
-        const width = 256;   // Sett ønsket bredde på terrenget
-        const height = 256;  // Sett ønsket høyde på terrenget
-        const geometry = new THREE.PlaneGeometry(100, 100, width - 1, height - 1);
+        const width = 200;   // Sett ønsket bredde på terrenget
+        const height = 200;  // Sett ønsket høyde på terrenget
+        const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
         geometry.rotateX(-Math.PI / 2); // Roter for å gjøre det horisontalt
 
         // Juster høydene basert på heightmap-bildet
@@ -34,21 +34,22 @@ export function createTerrain(scene) {
     });
 }
 
-// Function to calculate height at specific coordinates on the terrain (using terrain geometry)
+// Get the height at a specific position on the terrain
 export function getHeightAt(x, z, scene) {
-    const terrain = scene.getObjectByName('terrain'); // Retrieve the terrain by its name
+    const terrain = scene.getObjectByName('terrain'); // Get terrain object by name
 
     if (!terrain) {
         console.error("Terrain not found in the scene!");
-        return 0; // Return a default height (0) if terrain is missing
+        return 0; // Return default height if terrain is missing
     }
 
     const position = terrain.geometry.attributes.position;
-    const size = Math.sqrt(position.count); // Assuming square geometry
+    const size = Math.sqrt(position.count); // Assuming square terrain geometry
 
-    const gridX = Math.floor((x + 100) / 200 * (size - 1));
-    const gridZ = Math.floor((z + 100) / 200 * (size - 1));
+    // Map the x and z to grid coordinates on the terrain mesh
+    const gridX = Math.floor((x + 50) / 100 * (size - 1)); // Adjust mapping to terrain width
+    const gridZ = Math.floor((z + 50) / 100 * (size - 1)); // Adjust mapping to terrain height
 
     const index = gridZ * size + gridX;
-    return position.getZ(index);
+    return position.getY(index); // Get the height at this grid position
 }

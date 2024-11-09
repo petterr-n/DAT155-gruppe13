@@ -4,6 +4,7 @@ import { createScene } from './src/scene.js';
 import { createCamera } from './src/camera.js';
 import { createTerrain } from './src/terrain.js';
 import { loadModel } from './src/modelLoader.js';
+import {addMouseEventListener} from "./src/raycasting";
 
 // Create scene, camera, and renderer
 const scene = createScene();
@@ -19,15 +20,11 @@ createTerrain(scene);
 // Add OrbitControls for navigation
 const controls = new OrbitControls(camera, renderer.domElement);
 
-
 // Menu actions
 const modelSelect = document.getElementById('modelSelect');
 const placeModelBtn = document.getElementById('placeModelButton');
 
-placeModelBtn.addEventListener('click', () => {
-    const selectedModel = modelSelect.value;
-    loadModel(selectedModel, scene);
-});
+addMouseEventListener(scene, camera, modelSelect);
 
 // Render loop
 function animate() {

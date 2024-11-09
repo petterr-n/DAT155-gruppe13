@@ -11,18 +11,20 @@ const models = {
 };
 
 // Function to load and place the selected model on the terrain
-export function loadModel(modelName, scene) {
-    if (!models[modelName]) return;
+export function loadModel(modelName, scene, x, z, scale = 0.02) {
+    if (!models[modelName]) return; // Check if model exists
 
     loader.load(models[modelName], (gltf) => {
         const model = gltf.scene;
 
-        // Set the position of the model on the terrain (example coordinates)
-        const x = 10; // Modify the x, z coordinates as needed
-        const z = 10;
-        const y = getHeightAt(x, z, scene); // Get the height at this x, z position on the terrain
+        // Get the height at this x, z position on the terrain
+        const y = getHeightAt(x, z, scene);
 
+        // Set model's position to the intersection point's coordinates
         model.position.set(x, y, z);
-        scene.add(model);
+
+        model.scale.set(scale, scale, scale);
+
+        scene.add(model); // Add model to the scene
     });
 }
