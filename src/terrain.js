@@ -26,11 +26,22 @@ export function createTerrain(scene) {
         // Oppdater geometrien
         geometry.computeVertexNormals();
 
-        // Lag mesh for terrenget og legg til scenen
-        const material = new THREE.MeshLambertMaterial({ color: 0x88ccee, wireframe: false });
-        const terrain = new THREE.Mesh(geometry, material);
-        terrain.name = 'terrain';
-        scene.add(terrain);
+        // Load a texture for the terrain surface (e.g., grass, dirt)
+        loader.load('resources/grass.jpg', (terrainTexture) => {
+            terrainTexture.wrapS = THREE.RepeatWrapping;
+            terrainTexture.wrapT = THREE.RepeatWrapping;
+            terrainTexture.repeat.set(100, 100); // Adjust tiling as needed
+
+            // Create a material using the ground texture
+            const material = new THREE.MeshLambertMaterial({
+                map: terrainTexture, // Apply ground texture to the material
+            });
+
+            // Create the terrain mesh
+            const terrain = new THREE.Mesh(geometry, material);
+            terrain.name = 'terrain';
+            scene.add(terrain);
+        });
     });
 }
 
