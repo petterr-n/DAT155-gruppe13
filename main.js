@@ -42,10 +42,10 @@ function updateCamera() {
         camera.position.add(direction.clone().multiplyScalar(-movementSpeed));
     }
     if (keys['ArrowLeft'] || keys['a']) {
-        camera.rotation.y -= rotationSpeed;
+        camera.rotation.y += rotationSpeed;
     }
     if (keys['ArrowRight'] || keys['d']) {
-        camera.rotation.y += rotationSpeed;
+        camera.rotation.y -= rotationSpeed;
     }
 }
 
