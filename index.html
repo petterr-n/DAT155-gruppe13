@@ -6,9 +6,19 @@
     <title>My first three.js</title>
     <style>
         body { margin: 0; }
+        canvas { display: block }
+        #menu { position: absolute; top: 10px; z-index :10; background: rgba(255, 255, 255, 0.7); padding: 10px }
     </style>
 </head>
 <body>
-<script type="module" src="/main.js"></script>
+    <div>
+        <label for="modelSelect">Choose Model: </label>
+        <select id="modelSelect">
+            <option value="tree">Tree</option>
+            <option value="grass">Grass</option>
+            <option value="model3">Model 3</option>
+        </select>
+    </div>
+    <script type="module" src="/main.js"></script>
 </body>
 </html>
