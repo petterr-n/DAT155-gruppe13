@@ -19,5 +19,4 @@ export function addBackgroundSound(camera) {
 
     // Add event listener to start sound on user interaction
     document.addEventListener('click', startBackgroundSound, { once: true });
-
 }
