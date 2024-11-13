@@ -4,7 +4,7 @@ export function createScene() {
     const scene = new THREE.Scene();
 
     // Legg til lys
-    const light = new THREE.DirectionalLight(0xffffff, 1);
+    const light = new THREE.DirectionalLight(0xffffff, 1); // fjerne 100
     light.position.set(50, 50, 50).normalize();
     scene.add(light);
 

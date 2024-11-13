@@ -8,16 +8,23 @@ async function loadShader(url) {
 export async function createTerrain(scene) {
     const loader = new THREE.TextureLoader();
 
-    // Last inn gress- og steinteksturer
-    const grassTexture = loader.load('images/grass.png');
+    // Last inn dirt- og mountain
+
+    const grassTexture = loader.load('images/dirt2.png');
     grassTexture.wrapS = THREE.RepeatWrapping;
     grassTexture.wrapT = THREE.RepeatWrapping;
-    grassTexture.repeat.set(10, 10);
+    grassTexture.repeat.set(30, 30);
 
-    const rockTexture = loader.load('images/rock.png');
-    const heightmap = loader.load('images/heightmap.png', async (texture) => {
-        const width = 256;
-        const height = 256;
+    const rockTexture = loader.load('images/mountian.png');
+    rockTexture.wrapS = THREE.RepeatWrapping;
+    rockTexture.wrapT = THREE.RepeatWrapping;
+    rockTexture.repeat.set(100, 100);
+
+    const heightmap = loader.load('images/heightmap4.png', async (texture) => {
+        const width = 500;
+        const height = 500;
+        const peak = 150;
+
         const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
         geometry.rotateX(-Math.PI / 2);
 
@@ -32,7 +39,9 @@ export async function createTerrain(scene) {
 
         for (let i = 0; i < geometry.attributes.position.count; i++) {
             const grayValue = pixels[i * 4] / 255;
-            geometry.attributes.position.setY(i, grayValue * 20);
+          
+            geometry.attributes.position.setY(i, grayValue * peak);
+
         }
 
         geometry.computeVertexNormals();
@@ -47,7 +56,9 @@ export async function createTerrain(scene) {
             uniforms: {
                 grassTexture: { type: 't', value: grassTexture },
                 rockTexture: { type: 't', value: rockTexture },
-                transitionHeight: {value: 1.0 }, // Juster overgangshøyden her
+                
+              transitionHeight: {value: 2.0 } // Juster overgangshøyden her
+
             },
             vertexShader,
             fragmentShader
