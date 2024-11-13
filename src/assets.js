@@ -1,3 +1,4 @@
+// 3D-models used in the simulation
 export const assets = {
     tree: {
         path: 'models/tree.glb',
