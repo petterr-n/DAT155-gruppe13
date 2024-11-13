@@ -1,15 +1,27 @@
 import * as THREE from 'three';
 
-export function createTerrain(scene) {
+async function loadShader(url) {
+    const response = await fetch(url);
+    return await response.text();
+}
+
+export async function createTerrain(scene) {
     const loader = new THREE.TextureLoader();
 
-    loader.load('images/heightmap.png', (texture) => {
-        const width = 200;   // Sett ønsket bredde på terrenget
-        const height = 200;  // Sett ønsket høyde på terrenget
-        const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
-        geometry.rotateX(-Math.PI / 2); // Roter for å gjøre det horisontalt
+    // Last inn gress- og steinteksturer
+    const grassTexture = loader.load('images/grass.png');
+    grassTexture.wrapS = THREE.RepeatWrapping;
+    grassTexture.wrapT = THREE.RepeatWrapping;
+    grassTexture.repeat.set(10, 10);
 
-        // Juster høydene basert på heightmap-bildet
+    const rockTexture = loader.load('images/rock.png');
+    const heightmap = loader.load('images/heightmap.png', async (texture) => {
+        const width = 256;
+        const height = 256;
+        const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
+        geometry.rotateX(-Math.PI / 2);
+
+        // Juster høydene basert på heightmap
         const data = texture.image;
         texture.minFilter = THREE.LinearFilter;
         const ctx = document.createElement('canvas').getContext('2d');
@@ -19,29 +31,31 @@ export function createTerrain(scene) {
         const pixels = ctx.getImageData(0, 0, width, height).data;
 
         for (let i = 0; i < geometry.attributes.position.count; i++) {
-            const grayValue = pixels[i * 4] / 255; // Bruk gråskala-verdi (R-kanalen)
-            geometry.attributes.position.setY(i, grayValue * 10); // Skaler høyden
+            const grayValue = pixels[i * 4] / 255;
+            geometry.attributes.position.setY(i, grayValue * 20);
         }
 
-        // Oppdater geometrien
         geometry.computeVertexNormals();
 
-        // Load a texture for the terrain surface (e.g., grass, dirt)
-        loader.load('resources/grass.jpg', (terrainTexture) => {
-            terrainTexture.wrapS = THREE.RepeatWrapping;
-            terrainTexture.wrapT = THREE.RepeatWrapping;
-            terrainTexture.repeat.set(100, 100); // Adjust tiling as needed
 
-            // Create a material using the ground texture
-            const material = new THREE.MeshLambertMaterial({
-                map: terrainTexture, // Apply ground texture to the material
-            });
+        // Last inn shaderkoden fra filene
+        const vertexShader = await loadShader('shaders/vertexShader.glsl');
+        const fragmentShader = await loadShader('shaders/fragmentShader.glsl');
 
-            // Create the terrain mesh
-            const terrain = new THREE.Mesh(geometry, material);
-            terrain.name = 'terrain';
-            scene.add(terrain);
-        });
+        // Opprett ShaderMaterial med innlastede shader-filer
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                grassTexture: { type: 't', value: grassTexture },
+                rockTexture: { type: 't', value: rockTexture },
+                transitionHeight: {value: 1.0 }, // Juster overgangshøyden her
+            },
+            vertexShader,
+            fragmentShader
+        })
+
+        const terrain = new THREE.Mesh(geometry, material);
+        terrain.name = 'terrain';
+        scene.add(terrain);
     });
 }
 
@@ -73,4 +87,5 @@ export function getHeightAt(x, z, scene) {
     const index = clampedGridZ * size + clampedGridX;
     return position.getY(index); // Get the height at this grid position
 }
+
 
