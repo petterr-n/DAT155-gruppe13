@@ -20,7 +20,7 @@ export async function createTerrain(scene) {
     rockTexture.wrapT = THREE.RepeatWrapping;
     rockTexture.repeat.set(100, 100);
 
-    const heightmap = loader.load('images/heightmap4.png', async (texture) => {
+    const heightmap = loader.load('images/heightmap.png', async (texture) => {
         const width = 500;
         const height = 500;
         const peak = 150;
