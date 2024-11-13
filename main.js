@@ -2,8 +2,10 @@ import * as THREE from 'three';
 import { createScene } from './src/scene.js';
 import { createCamera } from './src/camera.js';
 import { createTerrain } from './src/terrain.js';
+import { loadModel } from './src/modelLoader.js';
+import {addMouseEventListener, checkCameraCollision} from "./src/raycasting";
 
-// Opprett scene, kamera og renderer
+// Create scene, camera, and renderer
 const scene = createScene();
 const camera = createCamera();
 
@@ -11,7 +13,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Legg til terreng
+// Add terrain
 createTerrain(scene);
 
 // Variabler for kameraets bevegelse
@@ -47,10 +49,18 @@ function updateCamera() {
     }
 }
 
-// Animasjonsløkke
+// Menu actions
+const modelSelect = document.getElementById('modelSelect');
+const placeModelBtn = document.getElementById('placeModelButton');
+
+addMouseEventListener(scene, camera, modelSelect);
+
+// Render loop
 function animate() {
     requestAnimationFrame(animate);
-    updateCamera();  // Oppdater kameraet
+    checkCameraCollision(scene, camera);
+    controls.update();
+    updateCamera();
     renderer.render(scene, camera);
 }
 

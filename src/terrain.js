@@ -37,6 +37,7 @@ export async function createTerrain(scene) {
 
         geometry.computeVertexNormals();
 
+
         // Last inn shaderkoden fra filene
         const vertexShader = await loadShader('shaders/vertexShader.glsl');
         const fragmentShader = await loadShader('shaders/fragmentShader.glsl');
@@ -53,6 +54,38 @@ export async function createTerrain(scene) {
         })
 
         const terrain = new THREE.Mesh(geometry, material);
+        terrain.name = 'terrain';
         scene.add(terrain);
     });
 }
+
+// Get the height at a specific position on the terrain
+export function getHeightAt(x, z, scene) {
+    const terrain = scene.getObjectByName('terrain'); // Get terrain object by name
+
+    if (!terrain) {
+        console.error("Terrain not found in the scene!");
+        return 0; // Return default height if terrain is missing
+    }
+
+    const position = terrain.geometry.attributes.position;
+    const size = Math.sqrt(position.count); // Assuming square terrain geometry
+
+    // Terrain scaling
+    const terrainWidth = terrain.geometry.parameters.width; // Actual width of the terrain
+    const terrainHeight = terrain.geometry.parameters.height; // Actual height of the terrain
+
+    // Convert world (x, z) coordinates to grid (gridX, gridZ) coordinates
+    const gridX = Math.floor((x + terrainWidth / 2) / terrainWidth * (size - 1));
+    const gridZ = Math.floor((z + terrainHeight / 2) / terrainHeight * (size - 1));
+
+    // Ensure the indices are within bounds
+    const clampedGridX = Math.max(0, Math.min(size - 1, gridX));
+    const clampedGridZ = Math.max(0, Math.min(size - 1, gridZ));
+
+    // Compute index in the position attribute array
+    const index = clampedGridZ * size + clampedGridX;
+    return position.getY(index); // Get the height at this grid position
+}
+
+
