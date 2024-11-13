@@ -57,10 +57,20 @@ export function getHeightAt(x, z, scene) {
     const position = terrain.geometry.attributes.position;
     const size = Math.sqrt(position.count); // Assuming square terrain geometry
 
-    // Map the x and z to grid coordinates on the terrain mesh
-    const gridX = Math.floor((x + 50) / 100 * (size - 1)); // Adjust mapping to terrain width
-    const gridZ = Math.floor((z + 50) / 100 * (size - 1)); // Adjust mapping to terrain height
+    // Terrain scaling
+    const terrainWidth = terrain.geometry.parameters.width; // Actual width of the terrain
+    const terrainHeight = terrain.geometry.parameters.height; // Actual height of the terrain
 
-    const index = gridZ * size + gridX;
+    // Convert world (x, z) coordinates to grid (gridX, gridZ) coordinates
+    const gridX = Math.floor((x + terrainWidth / 2) / terrainWidth * (size - 1));
+    const gridZ = Math.floor((z + terrainHeight / 2) / terrainHeight * (size - 1));
+
+    // Ensure the indices are within bounds
+    const clampedGridX = Math.max(0, Math.min(size - 1, gridX));
+    const clampedGridZ = Math.max(0, Math.min(size - 1, gridZ));
+
+    // Compute index in the position attribute array
+    const index = clampedGridZ * size + clampedGridX;
     return position.getY(index); // Get the height at this grid position
 }
+
