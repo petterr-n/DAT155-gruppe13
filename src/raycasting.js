@@ -59,9 +59,11 @@ export function checkCameraCollision(scene, camera) {
         const terrainHeight = intersects[0].point.y;
 
         // Adjust the camera height if it's below the minimum allowed height above the terrain
-        if (camera.position.y < terrainHeight + cameraMinHeightAboveTerrain) {
-            camera.position.y = terrainHeight + cameraMinHeightAboveTerrain;
-        }
+        // if (camera.position.y < terrainHeight + cameraMinHeightAboveTerrain) {
+        //     camera.position.y = terrainHeight + cameraMinHeightAboveTerrain;
+        // }
+
+        camera.position.y = terrainHeight + cameraMinHeightAboveTerrain;
     }
 }
 
