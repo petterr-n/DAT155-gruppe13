@@ -59,7 +59,6 @@ addMouseEventListener(scene, camera, modelSelect);
 function animate() {
     requestAnimationFrame(animate);
     checkCameraCollision(scene, camera);
-    controls.update();
     updateCamera();
     renderer.render(scene, camera);
 }
