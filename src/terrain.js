@@ -12,13 +12,13 @@ export async function createTerrain(scene) {
     const grassTexture = loader.load('images/grass.png');
     grassTexture.wrapS = THREE.RepeatWrapping;
     grassTexture.wrapT = THREE.RepeatWrapping;
-    grassTexture.repeat.set(30, 30);
+    grassTexture.repeat.set(10, 10);
 
     const rockTexture = loader.load('images/rock.png');
-    const heightmap = loader.load('images/heightmapMina.jpg', async (texture) => {
+    const heightmap = loader.load('images/heightmap.png', async (texture) => {
         const width = 256;
         const height = 256;
-        const geometry = new THREE.PlaneGeometry(200, 200, width - 1, height - 1);
+        const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
         geometry.rotateX(-Math.PI / 2);
 
         // Juster høydene basert på heightmap
@@ -46,7 +46,7 @@ export async function createTerrain(scene) {
             uniforms: {
                 grassTexture: { type: 't', value: grassTexture },
                 rockTexture: { type: 't', value: rockTexture },
-                transitionHeight: {value: 1.0 } // Juster overgangshøyden her
+                transitionHeight: {value: 1.0 }, // Juster overgangshøyden her
             },
             vertexShader,
             fragmentShader
