@@ -72,7 +72,7 @@ export function updateAnimations(delta) {
 
 
 // Get the height at a specific position on the terrain
-function getHeightAt(x, z, scene) {
+export function getHeightAt(x, z, scene) {
     const terrain = scene.getObjectByName('terrain'); // Get terrain object by name
 
     if (!terrain) {
