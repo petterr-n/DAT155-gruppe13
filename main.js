@@ -1,11 +1,9 @@
 import * as THREE from 'three';
 import { createScene } from './src/scene.js';
-import {createCamera, initKeyControls, updateCamera} from './src/camera.js';
+import { createCamera, initKeyControls, updateCamera } from './src/camera.js';
 import { createTerrain } from './src/terrain.js';
-import { loadModel } from './src/modelLoader.js';
-import {addMouseEventListener, checkCameraCollision} from "./src/raycasting";
+import { addMouseEventListener, checkCameraCollision } from "./src/raycasting";
 import MouseLookController from "./src/MouseLookController";
-
 
 // Create scene, camera, and renderer
 const scene = createScene();
@@ -14,6 +12,8 @@ const mouseLook = new MouseLookController(camera);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
 // Menu actions
@@ -25,10 +25,8 @@ createTerrain(scene);
 // Initialize keypresses to control the camera
 initKeyControls();
 
-
 // on-click event listener
 addMouseEventListener(scene, camera, modelSelect);
-
 
 // Pointer Lock setup
 document.body.addEventListener('click', () => {
@@ -59,6 +57,7 @@ function animate() {
     requestAnimationFrame(animate);
     checkCameraCollision(scene, camera);
     updateCamera(camera);
+
     renderer.render(scene, camera);
 }
 
