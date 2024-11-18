@@ -34,9 +34,12 @@ export async function createTerrain(scene) {
         ctx.drawImage(data, 0, 0, width, height);
         const pixels = ctx.getImageData(0, 0, width, height).data;
 
+        const heights = [];
         for (let i = 0; i < geometry.attributes.position.count; i++) {
             const grayValue = pixels[i * 4] / 255;
-            geometry.attributes.position.setY(i, grayValue * peak);
+            const heightValue = grayValue * peak;
+            heights.push(heightValue);
+            geometry.attributes.position.setY(i, heightValue);
         }
 
         geometry.computeVertexNormals();
@@ -68,5 +71,42 @@ export async function createTerrain(scene) {
         terrain.castShadow = false;
 
         scene.add(terrain);
+
+        addTerrainWalls(scene, width, height, peak, heights)
     });
+}
+
+function addTerrainWalls(scene, terrainWidth, terrainHeight, peak) {
+    const loader = new THREE.TextureLoader();
+    const wallTexture = loader.load('images/jungle.png');
+    wallTexture.wrapS = THREE.RepeatWrapping;
+    wallTexture.wrapT = THREE.RepeatWrapping;
+
+    const wallMaterial = new THREE.MeshStandardMaterial({
+        map: wallTexture,
+        side: THREE.DoubleSide // Fjern DoubleSide for å sikre korrekt retning
+    });
+
+    const wallHeight = peak + 50; // Høyden på veggen over terrenget
+
+    const createWall = (x, z, width, height, rotationY, flip) => {
+        const wallGeometry = new THREE.PlaneGeometry(width, height);
+        const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+
+        wall.position.set(x, height / 2, z);
+        wall.rotation.y = rotationY;
+
+        // Speil veggen om nødvendig for å korrigere teksturen
+        if (flip) {
+            wallGeometry.scale(-1, 1, 1); // Vend teksturkoordinatene horisontalt
+        }
+
+        scene.add(wall);
+    };
+
+    // Legg til veggene rundt terrenget
+    createWall(0, -terrainHeight / 2, terrainWidth, wallHeight, 0, true); // Frontvegg
+    createWall(0, terrainHeight / 2, terrainWidth, wallHeight, Math.PI, false); // Bakvegg
+    createWall(-terrainWidth / 2, 0, terrainHeight, wallHeight, Math.PI / 2, true); // Venstre vegg
+    createWall(terrainWidth / 2, 0, terrainHeight, wallHeight, -Math.PI / 2, false); // Høyre vegg
 }
