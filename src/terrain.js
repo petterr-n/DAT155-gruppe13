@@ -22,9 +22,9 @@ export async function createTerrain(scene) {
 
         loader.load('images/heightmap.png', async (texture) => {
             try {
-                const width = 500;
-                const height = 500;
-                const peak = 150;
+                const width = 250;
+                const height = 250;
+                const peak = 50;
 
                 const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
                 geometry.rotateX(-Math.PI / 2);

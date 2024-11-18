@@ -35,7 +35,7 @@ scene.add(user);
 
 // Add event listener for VR session start to set the initial camera position
 renderer.xr.addEventListener('sessionstart', () => {
-    user.position.set(200, 10, 230); // Set user group to start position for VR mode
+    user.position.set(100, 10, 115); // Set user group to start position for VR mode
 });
 
 // Menu actions

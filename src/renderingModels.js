@@ -45,7 +45,7 @@ export async function createGrassField(scene, camera, terrain) {
 
     const terrainGeometry = terrain.geometry;
     const gridSpacing = 15;
-    const randomRange = gridSpacing * 0.4;
+    const randomRange = gridSpacing * 0.9;
 
     // Calculate camera frustum
     const frustum = new Frustum();
@@ -62,7 +62,7 @@ export async function createGrassField(scene, camera, terrain) {
             const posZ = z + offsetZ;
 
             const y = getHeightAt(posX, posZ, terrain); // Terrain height
-            if (y > 2) { // Avoid placing grass below or above certain height
+            if (y > 1) { // Avoid placing grass below or above certain height
                 continue;
             }
 
@@ -92,7 +92,7 @@ export function updateGrassVisibility(camera, scene) {
         const distanceToCamera = camera.position.distanceTo(grassObject.object.position);
 
         // If close, switch to 3D grass
-        if (distanceToCamera < 50) {
+        if (distanceToCamera < 120) {
             if (grassObject.type !== '3d' && grassModel) { // If not already 3D
                 const highQualityGrass = grassModel.clone();
                 highQualityGrass.position.copy(grassObject.object.position); // Maintain position
