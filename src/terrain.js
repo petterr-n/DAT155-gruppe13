@@ -20,11 +20,11 @@ export async function createTerrain(scene) {
         rockTexture.wrapS = THREE.RepeatWrapping;
         rockTexture.wrapT = THREE.RepeatWrapping;
 
-        loader.load('images/heightmap.png', async (texture) => {
+        loader.load('images/heightmap4.png', async (texture) => {
             try {
                 const width = 250;
                 const height = 250;
-                const peak = 50;
+                const peak = 30;
 
                 const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
                 geometry.rotateX(-Math.PI / 2);
@@ -75,7 +75,6 @@ export async function createTerrain(scene) {
                 terrain.receiveShadow = true;
                 terrain.casShadow = false;
                 scene.add(terrain);
-                addTerrainWalls(scene, width, height, peak, heights);
 
                 // Resolve the promise with the terrain object
                 resolve(terrain);
@@ -87,40 +86,3 @@ export async function createTerrain(scene) {
         });
     });
 }
-
-
-function addTerrainWalls(scene, terrainWidth, terrainHeight, peak) {
-    const loader = new THREE.TextureLoader();
-    const wallTexture = loader.load('images/jungle.png');
-    wallTexture.wrapS = THREE.RepeatWrapping;
-    wallTexture.wrapT = THREE.RepeatWrapping;
-
-    const wallMaterial = new THREE.MeshStandardMaterial({
-        map: wallTexture,
-        side: THREE.DoubleSide // Fjern DoubleSide for å sikre korrekt retning
-    });
-
-    const wallHeight = peak + 50; // Høyden på veggen over terrenget
-
-    const createWall = (x, z, width, height, rotationY, flip) => {
-        const wallGeometry = new THREE.PlaneGeometry(width, height);
-        const wall = new THREE.Mesh(wallGeometry, wallMaterial);
-
-        wall.position.set(x, height / 2, z);
-        wall.rotation.y = rotationY;
-
-        // Speil veggen om nødvendig for å korrigere teksturen
-        if (flip) {
-            wallGeometry.scale(-1, 1, 1); // Vend teksturkoordinatene horisontalt
-        }
-
-        scene.add(wall);
-    };
-
-    // Legg til veggene rundt terrenget
-    createWall(0, -terrainHeight / 2, terrainWidth, wallHeight, 0, true); // Frontvegg
-    createWall(0, terrainHeight / 2, terrainWidth, wallHeight, Math.PI, false); // Bakvegg
-    createWall(-terrainWidth / 2, 0, terrainHeight, wallHeight, Math.PI / 2, true); // Venstre vegg
-    createWall(terrainWidth / 2, 0, terrainHeight, wallHeight, -Math.PI / 2, false); // Høyre vegg
-}
-
