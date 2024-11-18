@@ -2,15 +2,19 @@ import * as THREE from 'three';
 import { createScene } from './src/scene.js';
 import { createCamera, initKeyControls, updateCamera } from './src/camera.js';
 import { createTerrain } from './src/terrain.js';
+import {loadModel, updateAnimations} from './src/modelLoader.js';
+import {createGrassField, updateGrassVisibility} from "./src/renderingModels";
 import { addMouseEventListener, checkCameraCollision } from "./src/raycasting";
 import MouseLookController from "./src/MouseLookController";
 import { addBackgroundSound } from "./src/sound";
 import { VRButton } from "./src/VRButton";
 import { Vector3 } from "three";
 
+
 // Create scene, camera, and renderer
 const scene = createScene();
 const camera = createCamera();
+const clock = new THREE.Clock();
 const mouseLook = new MouseLookController(camera);
 
 const renderer = new THREE.WebGLRenderer();
@@ -38,7 +42,10 @@ renderer.xr.addEventListener('sessionstart', () => {
 const modelSelect = document.getElementById('modelSelect');
 
 // Add terrain
-createTerrain(scene);
+const terrain = await createTerrain(scene);
+console.log(terrain);
+
+await createGrassField(scene, camera, terrain);
 
 // Add background sound
 addBackgroundSound(camera);
@@ -124,6 +131,8 @@ function updateUserHeightAboveTerrain() {
 // Render loop
 function animate() {
     renderer.setAnimationLoop(() => {
+        let delta = clock.getDelta();
+        updateAnimations(delta);
         checkCameraCollision(scene, camera);
 
         // Handle VR movement
@@ -132,6 +141,7 @@ function animate() {
 
         // Update user height to stay above terrain
         updateUserHeightAboveTerrain();
+        updateGrassVisibility(camera, scene);
 
         // Update camera
         updateCamera(camera);

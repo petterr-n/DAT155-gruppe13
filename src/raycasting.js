@@ -8,24 +8,33 @@ const downDirection = new THREE.Vector3(0, -1, 0); // Direction for downward ray
 // Minimum height above terrain for the camera
 const cameraMinHeightAboveTerrain = 2;
 
-// Function to handle model placement on mouse click
 export function onMouseClick(event, scene, camera, modelSelect) {
-    // Normalize mouse position (-1 to 1)
+    // Normalize mouse position
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+    // Set raycaster from camera and mouse position
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObject(scene.getObjectByName('terrain'));
+
+    // Intersect with terrain only
+    const terrain = scene.getObjectByName('terrain');
+    if (!terrain) {
+        console.error("Terrain not found in the scene!");
+        return;
+    }
+
+    const intersects = raycaster.intersectObject(terrain);
 
     if (intersects.length > 0) {
+        // Get intersection point
         const intersection = intersects[0];
         const point = intersection.point;
 
-        const x = point.x;
-        const z = point.z;
+        // Get selected model and place it
         const selectedModel = modelSelect.value;
-
-        loadModel(selectedModel, scene, x, z);
+        if (selectedModel) {
+            loadModel(selectedModel, scene, point.x, point.z); // Use x, z for accurate placement
+        }
     }
 }
 
