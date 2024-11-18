@@ -45,7 +45,7 @@ const modelSelect = document.getElementById('modelSelect');
 const terrain = await createTerrain(scene);
 console.log(terrain);
 
-await createGrassField(scene, camera, terrain);
+//await createGrassField(scene, camera, terrain);
 
 // Add background sound
 addBackgroundSound(camera);
@@ -112,21 +112,21 @@ function VRMovement() {
 }
 
 // Function to keep user above the terrain
-function updateUserHeightAboveTerrain() {
-    const terrain = scene.getObjectByName('terrain');
-    if (!terrain) {
-        console.warn("Terrain not found in the scene for camera collision detection.");
-        return;
-    }
-
-    raycaster.set(user.position, downDirection);
-    const intersects = raycaster.intersectObject(terrain);
-
-    if (intersects.length > 0) {
-        const terrainHeight = intersects[0].point.y;
-        user.position.y = terrainHeight + cameraMinHeightAboveTerrain;
-    }
-}
+// function updateUserHeightAboveTerrain() {
+//     const terrain = scene.getObjectByName('terrain');
+//     if (!terrain) {
+//         console.warn("Terrain not found in the scene for camera collision detection.");
+//         return;
+//     }
+//
+//     raycaster.set(user.position, downDirection);
+//     const intersects = raycaster.intersectObject(terrain);
+//
+//     if (intersects.length > 0) {
+//         const terrainHeight = intersects[0].point.y;
+//         user.position.y = terrainHeight + cameraMinHeightAboveTerrain;
+//     }
+// }
 
 // Render loop
 function animate() {
@@ -140,8 +140,8 @@ function animate() {
         user.position.add(movement);
 
         // Update user height to stay above terrain
-        updateUserHeightAboveTerrain();
-        updateGrassVisibility(camera, scene);
+        //updateUserHeightAboveTerrain();
+       // updateGrassVisibility(camera, scene);
 
         // Update camera
         updateCamera(camera);

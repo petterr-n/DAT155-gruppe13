@@ -1,6 +1,4 @@
 import * as THREE from 'three';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { getHeightAt } from "./modelLoader";
 
 async function loadShader(url) {
     const response = await fetch(url);
@@ -22,8 +20,8 @@ export async function createTerrain(scene) {
 
         loader.load('images/heightmap4.png', async (texture) => {
             try {
-                const width = 250;
-                const height = 250;
+                const width = 150;
+                const height = 150;
                 const peak = 30;
 
                 const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
@@ -61,7 +59,7 @@ export async function createTerrain(scene) {
                     uniforms: {
                         grassTexture: { value: grassTexture },
                         rockTexture: { value: rockTexture },
-                        transitionHeight: { value: 2.0 },
+                        transitionHeight: { value: 4.0 },
                         lightDirection: { value: lightDirection },
                         lightColor: { value: new THREE.Color(1, 1, 1) }, // Juster lysstyrken hvis ønskelig
                         ambientColor: { value: new THREE.Color(0.4, 0.4, 0.4) } // Juster ambient lys hvis ønskelig
