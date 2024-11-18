@@ -45,10 +45,15 @@ initKeyControls();
 // on-click event listener
 addMouseEventListener(scene, camera, modelSelect);
 
+// Raycaster for checking terrain height
+const raycaster = new THREE.Raycaster();
+const downDirection = new THREE.Vector3(0, -1, 0);
+const cameraMinHeightAboveTerrain = 2;
+
 // Function to handle VR movement
 function VRMovement() {
     const session = renderer.xr.getSession();
-    const speed = 0.2;
+    const speed = 0.5;
     if (session && session.inputSources[0]) {
         const gamepad = session.inputSources[0].gamepad;
         if (gamepad) {
@@ -72,6 +77,25 @@ function VRMovement() {
     return new Vector3();
 }
 
+// Function to keep user above the terrain
+function updateUserHeightAboveTerrain() {
+    const terrain = scene.getObjectByName('terrain');
+    if (!terrain) {
+        console.warn("Terrain not found in the scene for camera collision detection.");
+        return;
+    }
+
+    raycaster.set(user.position, downDirection);
+    const intersects = raycaster.intersectObject(terrain);
+
+    if (intersects.length > 0) {
+        const terrainHeight = intersects[0].point.y;
+        if (user.position.y < terrainHeight + cameraMinHeightAboveTerrain) {
+            user.position.y = terrainHeight + cameraMinHeightAboveTerrain;
+        }
+    }
+}
+
 // Render loop
 function animate() {
     renderer.setAnimationLoop(() => {
@@ -80,6 +104,9 @@ function animate() {
         // Get VR movement and apply it to the user group
         const movement = VRMovement();
         user.position.add(movement);
+
+        // Update user height to stay above terrain
+        updateUserHeightAboveTerrain();
 
         updateCamera(camera);
         renderer.render(scene, camera);
