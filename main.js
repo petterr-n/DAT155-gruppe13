@@ -3,6 +3,7 @@ import { createScene } from './src/scene.js';
 import { createCamera, initKeyControls, updateCamera } from './src/camera.js';
 import { createTerrain } from './src/terrain.js';
 import { addMouseEventListener, checkCameraCollision } from "./src/raycasting";
+import MouseLookController from "./src/MouseLookController";
 import { addBackgroundSound } from "./src/sound";
 import { VRButton } from "./src/VRButton";
 import { Vector3 } from "three";
@@ -10,9 +11,12 @@ import { Vector3 } from "three";
 // Create scene, camera, and renderer
 const scene = createScene();
 const camera = createCamera();
+const mouseLook = new MouseLookController(camera);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
 // Enable VR support
@@ -45,6 +49,30 @@ initKeyControls();
 // on-click event listener
 addMouseEventListener(scene, camera, modelSelect);
 
+// Pointer Lock setup
+document.body.addEventListener('click', () => {
+    renderer.domElement.requestPointerLock();
+});
+
+// Handle pointer lock state change
+document.addEventListener('pointerlockchange', () => {
+    if (document.pointerLockElement === renderer.domElement) {
+        console.log("Pointer locked!");
+    } else {
+        console.log("Pointer unlocked!");
+    }
+});
+
+// Mouse movement listener
+document.addEventListener('mousemove', (event) => {
+    if (document.pointerLockElement === renderer.domElement) {
+        const sensitivity = 0.002; // Adjust sensitivity as needed
+        const pitchDelta = -event.movementY * sensitivity; // Up/down
+        const yawDelta = -event.movementX * sensitivity;   // Left/right
+        mouseLook.update(pitchDelta, yawDelta);            // Update camera
+    }
+});
+
 // Raycaster for checking terrain height
 const raycaster = new THREE.Raycaster();
 const downDirection = new THREE.Vector3(0, -1, 0);
@@ -59,13 +87,12 @@ function VRMovement() {
         if (gamepad) {
             const x = gamepad.axes[2];
             const y = gamepad.axes[3];
-            //*speed so that the position depends on player speed
-            var movement = new Vector3(x * speed, 0, y * speed); // Positive z for forward movement
+            const movement = new Vector3(x * speed, 0, y * speed); // Positive z for forward movement
 
             // Apply camera's rotation to the movement vector to make it relative to the current orientation
             movement.applyQuaternion(camera.quaternion);
 
-            // Same idea with speed here
+            // Handle vertical movement
             if (gamepad.buttons[4].pressed) {
                 movement.y += 1 * speed;
             } else if (gamepad.buttons[5].pressed) {
@@ -101,13 +128,14 @@ function animate() {
     renderer.setAnimationLoop(() => {
         checkCameraCollision(scene, camera);
 
-        // Get VR movement and apply it to the user group
+        // Handle VR movement
         const movement = VRMovement();
         user.position.add(movement);
 
         // Update user height to stay above terrain
         updateUserHeightAboveTerrain();
 
+        // Update camera
         updateCamera(camera);
         renderer.render(scene, camera);
     });
