@@ -7,7 +7,7 @@ export const assets = {
     },
     grass: {
         path: 'models/grass.glb',
-        scale: 2,
+        scale: 5,
         type: 'static',
     },
     tiger :{
