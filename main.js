@@ -31,7 +31,7 @@ scene.add(user);
 
 // Add event listener for VR session start to set the initial camera position
 renderer.xr.addEventListener('sessionstart', () => {
-    user.position.set(200, 10, 250); // Set user group to start position for VR mode
+    user.position.set(200, 10, 230); // Set user group to start position for VR mode
 });
 
 // Menu actions
@@ -117,9 +117,7 @@ function updateUserHeightAboveTerrain() {
 
     if (intersects.length > 0) {
         const terrainHeight = intersects[0].point.y;
-        if (user.position.y < terrainHeight + cameraMinHeightAboveTerrain) {
-            user.position.y = terrainHeight + cameraMinHeightAboveTerrain;
-        }
+        user.position.y = terrainHeight + cameraMinHeightAboveTerrain;
     }
 }
 
