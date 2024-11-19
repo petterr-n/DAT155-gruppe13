@@ -1,5 +1,5 @@
-uniform sampler2D grassTexture;
-uniform sampler2D rockTexture;
+uniform sampler2D sandTexture;
+uniform sampler2D jungleTexture;
 uniform float transitionHeight;
 uniform vec3 lightDirection; // Lysretningen i verdensrommet (må være normalisert)
 uniform vec3 lightColor;
@@ -12,9 +12,9 @@ varying vec3 vWorldNormal;   // Bruker verdensnormalen
 void main() {
     // Teksturblanding basert på høyde
     float mixFactor = smoothstep(transitionHeight - 2.0, transitionHeight + 0.5, vHeight);
-    vec4 grassColor = texture2D(grassTexture, vUv * 10.0);
-    vec4 rockColor = texture2D(rockTexture, vUv * 5.0);
-    vec4 baseColor = mix(grassColor, rockColor, mixFactor);
+    vec4 sandColor = texture2D(sandTexture, vUv * 10.0);
+    vec4 jungleColor = texture2D(jungleTexture, vUv * 5.0);
+    vec4 baseColor = mix(sandColor, jungleColor, mixFactor);
 
     // Normaliser normalen
     vec3 normal = normalize(vWorldNormal);

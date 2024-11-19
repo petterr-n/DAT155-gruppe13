@@ -10,15 +10,15 @@ export async function createTerrain(scene) {
         const loader = new THREE.TextureLoader();
 
         // Load dirt and mountain textures
-        const grassTexture = loader.load('assets/images/sand.png');
-        grassTexture.wrapS = THREE.RepeatWrapping;
-        grassTexture.wrapT = THREE.RepeatWrapping;
+        const sandTexture = loader.load('assets/images/sand.png');
+        sandTexture.wrapS = THREE.RepeatWrapping;
+        sandTexture.wrapT = THREE.RepeatWrapping;
 
-        const rockTexture = loader.load('assets/images/m1.png');
-        rockTexture.wrapS = THREE.RepeatWrapping;
-        rockTexture.wrapT = THREE.RepeatWrapping;
+        const jungleTexture = loader.load('assets/images/jungle.png');
+        jungleTexture.wrapS = THREE.RepeatWrapping;
+        jungleTexture.wrapT = THREE.RepeatWrapping;
 
-        loader.load('assets/images/heightmap4.png', async (texture) => {
+        loader.load('assets/images/heightmap.png', async (texture) => {
             try {
                 const width = 150;
                 const height = 150;
@@ -57,8 +57,8 @@ export async function createTerrain(scene) {
                 // Opprett ShaderMaterial med oppdaterte uniforms
                 const material = new THREE.ShaderMaterial({
                     uniforms: {
-                        grassTexture: { value: grassTexture },
-                        rockTexture: { value: rockTexture },
+                        sandTexture: { value: sandTexture },
+                        jungleTexture: { value: jungleTexture },
                         transitionHeight: { value: 2.8 },
                         lightDirection: { value: lightDirection },
                         lightColor: { value: new THREE.Color(1.5, 1.5, 1.5) }, // Juster lysstyrken hvis ønskelig
