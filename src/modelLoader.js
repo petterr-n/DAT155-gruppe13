@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 //import { getHeightAt } from './terrain.js';
-import { assets } from './assets.js';
+import {assets, startingAssets} from './assets.js';
 
 const loader = new GLTFLoader();
 
@@ -66,6 +66,7 @@ export function loadModel(modelName, scene, x, z) {
 // Update animations in the render loop
 export function updateAnimations(delta) {
     mixers.forEach((mixer) => {
+        //console.log('Updating mixer', mixer);
         mixer.update(delta); // Update each mixer with the delta time
     });
 }
@@ -99,3 +100,78 @@ export function getHeightAt(x, z, scene) {
     const index = clampedGridZ * size + clampedGridX;
     return position.getY(index); // Get the height at this grid position
 }
+
+
+export async function loadStartingAssets(scene) {
+    const promises = Object.keys(startingAssets).map(key => {
+        const asset = startingAssets[key];
+
+        return new Promise((resolve, reject) => {
+            loader.load(asset.path, (gltf) => {
+                let object;
+
+                // Check if the asset has multiple positions (like trees)
+                if (asset.positions && asset.positions.length > 0) {
+                    asset.positions.forEach(pos => {
+                        object = gltf.scene.clone(); // Clone the model for each position
+                        object.scale.set(asset.scale, asset.scale, asset.scale);  // Set scale
+                        object.position.set(pos.x, pos.y, pos.z);  // Set position
+
+                        // Handle animations if the object has any
+                        if (gltf.animations && gltf.animations.length > 0) {
+                            const mixer = new THREE.AnimationMixer(object);
+                            gltf.animations.forEach((clip) => {
+                                //console.log(`Playing animation: ${clip.name}`);
+                                mixer.clipAction(clip).play();  // Play each animation
+                            });
+                            object.userData.mixer = mixer;  // Store the mixer on the object for future updates
+                            mixers.push(mixer);
+                        }
+
+                        // If there's a target for rotation, rotate the object to face the target
+                        if (asset.target) {
+                            object.lookAt(asset.target); // Rotate to face the target point
+                        }
+
+                        // Add the object to the scene
+                        scene.add(object);
+                        console.log(`${key} loaded at position`, pos);
+                    });
+                } else {
+                    // If the asset does not have multiple positions, just load it normally
+                    object = gltf.scene;
+                    object.scale.set(asset.scale, asset.scale, asset.scale);
+                    object.position.set(asset.position.x, asset.position.y, asset.position.z);
+
+                    // Handle animations if the object has any
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        const mixer = new THREE.AnimationMixer(object);
+                        gltf.animations.forEach((clip) => {
+                            //console.log(`Playing animation: ${clip.name}`);
+                            mixer.clipAction(clip).play();  // Play each animation
+                        });
+                        object.userData.mixer = mixer;  // Store the mixer on the object for future updates
+                        mixers.push(mixer);
+                    }
+
+                    // If there's a target for rotation, rotate the object to face the target
+                    if (asset.target) {
+                        object.lookAt(asset.target);
+                    }
+
+                    // Add the object to the scene
+                    scene.add(object);
+                    console.log(`${key} loaded at position`, asset.position);
+                }
+
+                resolve(object);
+            }, undefined, (error) => {
+                console.error('Error loading asset', key, error);
+                reject(error);
+            });
+        });
+    });
+
+    return Promise.all(promises);  // Wait for all assets to load and return the result
+}
+

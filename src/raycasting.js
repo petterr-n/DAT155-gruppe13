@@ -32,7 +32,7 @@ export function onMouseClick(event, scene, camera, modelSelect) {
 
         // Get selected model and place it
         const selectedModel = modelSelect.value;
-        if (selectedModel) {
+        if (selectedModel && selectedModel !== 'none') {
             loadModel(selectedModel, scene, point.x, point.z); // Use x, z for accurate placement
         }
     }
@@ -59,6 +59,8 @@ export function checkCameraCollision(scene, camera) {
         const terrainHeight = intersects[0].point.y;
 
         camera.position.y = terrainHeight + cameraMinHeightAboveTerrain;
+        //console.log(`Camera Y Position: ${camera.position.y}, Terrain Height: ${terrainHeight}`);
+
 
     }
 }
