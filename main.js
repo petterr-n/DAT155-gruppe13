@@ -96,7 +96,7 @@ function animate() {
 
         // Water physics
         if (water.material.uniforms.time) {
-            water.material.uniforms.time.value += 0.001; // Adjust speed of the water movement
+            water.material.uniforms.time.value += 0.0005; // Adjust speed of the water movement
         }
         updateRain();
 

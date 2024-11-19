@@ -61,7 +61,7 @@ export async function createTerrain(scene) {
                         jungleTexture: { value: jungleTexture },
                         transitionHeight: { value: 2.8 },
                         lightDirection: { value: lightDirection },
-                        lightColor: { value: new THREE.Color(1.5, 1.5, 1.5) }, // Juster lysstyrken hvis ønskelig
+                        lightColor: { value: new THREE.Color(1, 1, 1) }, // Juster lysstyrken hvis ønskelig
                         ambientColor: { value: new THREE.Color(0.4, 0.4, 0.4) } // Juster ambient lys hvis ønskelig
                     },
                     vertexShader,

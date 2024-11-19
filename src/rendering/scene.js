@@ -18,10 +18,10 @@ export function createScene() {
     // Adjust shadows for the darker scene
     light.shadow.mapSize.width = 2048;
     light.shadow.mapSize.height = 2048;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 2000;
-    light.shadow.camera.left = -500;
-    light.shadow.camera.right = 500;
+    light.shadow.camera.near = 1;
+    light.shadow.camera.far = 100;
+    light.shadow.camera.left = -10;
+    light.shadow.camera.right = 10;
     light.shadow.camera.top = 500;
     light.shadow.camera.bottom = -500;
 
@@ -29,7 +29,7 @@ export function createScene() {
     scene.add(light.target);
 
     // Add dark ambient light
-    const ambientLight = new THREE.AmbientLight(0x222222, 0.1);  // Dark ambient light
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.5);  // Dark ambient light
     scene.add(ambientLight);
 
     scene.background = new THREE.Color(0x222222);  // Dark gray background

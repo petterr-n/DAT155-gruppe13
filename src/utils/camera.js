@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 // Variabler for kameraets bevegelse
-const movementSpeed = 0.2;
+const movementSpeed = 0.1;
 const rotationSpeed = 0.05;
 const keys = {};
 
