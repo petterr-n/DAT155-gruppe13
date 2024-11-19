@@ -14,6 +14,16 @@ export default class MouseLookController {
 
         // Create an object for controlling orientation
         this.camera.rotation.order = 'YXZ'; // Ensure proper rotation order
+
+        // Event listener for pointer lock
+        document.addEventListener('pointerlockchange', () => {
+            if (document.pointerLockElement) {
+                // Set pitch and yaw based on camera's current rotation
+                const euler = new THREE.Euler().setFromQuaternion(this.camera.quaternion, 'YXZ');
+                this.pitch = euler.x;
+                this.yaw = euler.y;
+            }
+        });
     }
 
     update(pitchDelta, yawDelta) {
@@ -24,8 +34,10 @@ export default class MouseLookController {
         // Clamp pitch to avoid flipping
         this.pitch = Math.max(this.pitchMin, Math.min(this.pitchMax, this.pitch));
 
-        // Apply pitch and yaw to the camera
-        this.camera.rotation.x = this.pitch; // Apply pitch (up/down)
-        this.camera.rotation.y = this.yaw;   // Apply yaw (left/right)
+        // Keep yaw within a full rotation (0 to 2 * Math.PI)
+        this.yaw = (this.yaw + 2 * Math.PI) % (2 * Math.PI);
+
+        // Apply pitch and yaw to the camera using Euler angles
+        this.camera.rotation.set(this.pitch, this.yaw, 0, 'YXZ');
     }
 }

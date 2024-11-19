@@ -66,19 +66,19 @@ initKeyControls();
 // on-click event listener
 addMouseEventListener(scene, camera, modelSelect);
 
-// Pointer Lock setup
-// document.body.addEventListener('click', () => {
-//     renderer.domElement.requestPointerLock();
-// });
-//
-// // Handle pointer lock state change
-// document.addEventListener('pointerlockchange', () => {
-//     if (document.pointerLockElement === renderer.domElement) {
-//         console.log("Pointer locked!");
-//     } else {
-//         console.log("Pointer unlocked!");
-//     }
-// });
+//Pointer Lock setup
+document.body.addEventListener('click', () => {
+     renderer.domElement.requestPointerLock();
+ });
+
+//Handle pointer lock state change
+document.addEventListener('pointerlockchange', () => {
+     if (document.pointerLockElement === renderer.domElement) {
+         console.log("Pointer locked!");
+     } else {
+         console.log("Pointer unlocked!");
+     }
+});
 
 // Mouse movement listener
 document.addEventListener('mousemove', (event) => {
