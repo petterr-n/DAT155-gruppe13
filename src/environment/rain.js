@@ -7,7 +7,7 @@ export function createRain(scene, terrain) {
     const positions = new Float32Array(rainCount * 3);
     const rainMaterial = new THREE.PointsMaterial({
         color: 0xaaaaaa,      // Light gray color for raindrops
-        size: 0.5,            // Size of each raindrop
+        size: 0.3,            // Size of each raindrop
         opacity: 0.5,         // Transparency
         transparent: true,    // Make sure the material supports transparency
         depthWrite: false,    // Don't write to depth buffer to prevent blocking objects
