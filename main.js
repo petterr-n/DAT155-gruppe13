@@ -38,7 +38,7 @@ scene.add(user);
 
 // Add event listener for VR session start to set the initial camera position
 renderer.xr.addEventListener('sessionstart', () => {
-    user.position.set(100, 10, 115); // Set user group to start position for VR mode
+    user.position.set(-24, 5, -42); // Set user group to start position for VR mode
 });
 
 // Menu actions
@@ -91,9 +91,9 @@ document.addEventListener('mousemove', (event) => {
 });
 
 // Raycaster for checking terrain height
-// const raycaster = new THREE.Raycaster();
-// const downDirection = new THREE.Vector3(0, -1, 0);
-// const cameraMinHeightAboveTerrain = 2;
+const raycaster = new THREE.Raycaster();
+const downDirection = new THREE.Vector3(0, -1, 0);
+const cameraMinHeightAboveTerrain = 2;
 
 // Function to handle VR movement
 function VRMovement() {
@@ -122,21 +122,21 @@ function VRMovement() {
 }
 
 // Function to keep user above the terrain
-// function updateUserHeightAboveTerrain() {
-//     const terrain = scene.getObjectByName('terrain');
-//     if (!terrain) {
-//         console.warn("Terrain not found in the scene for camera collision detection.");
-//         return;
-//     }
-//
-//     raycaster.set(user.position, downDirection);
-//     const intersects = raycaster.intersectObject(terrain);
-//
-//     if (intersects.length > 0) {
-//         const terrainHeight = intersects[0].point.y;
-//         user.position.y = terrainHeight + cameraMinHeightAboveTerrain;
-//     }
-// }
+function updateUserHeightAboveTerrain() {
+    const terrain = scene.getObjectByName('terrain');
+    if (!terrain) {
+        console.warn("Terrain not found in the scene for camera collision detection.");
+        return;
+    }
+
+    raycaster.set(user.position, downDirection);
+    const intersects = raycaster.intersectObject(terrain);
+
+    if (intersects.length > 0) {
+        const terrainHeight = intersects[0].point.y;
+        user.position.y = terrainHeight + cameraMinHeightAboveTerrain;
+    }
+}
 
 // Render loop
 function animate() {
@@ -150,7 +150,7 @@ function animate() {
         user.position.add(movement);
 
         // Update user height to stay above terrain
-        //updateUserHeightAboveTerrain();
+        updateUserHeightAboveTerrain();
        // updateGrassVisibility(camera, scene);
 
         // Water physics
