@@ -16,7 +16,7 @@ export function enableVR(renderer, user, camera) {
 
 export function VRMovement(renderer, camera) {
     const session = renderer.xr.getSession();
-    const speed = 0.5;
+    const speed = 0.1;
     if (session && session.inputSources[0]) {
         const gamepad = session.inputSources[0].gamepad;
         if (gamepad) {
@@ -42,7 +42,7 @@ export function VRMovement(renderer, camera) {
 export function updateUserHeightAboveTerrain(scene, user) {
     const raycaster = new THREE.Raycaster();
     const downDirection = new THREE.Vector3(0, -1, 0);
-    const cameraMinHeightAboveTerrain = 2;
+    const cameraMinHeightAboveTerrain = 1;
 
     const terrain = scene.getObjectByName('terrain');
     if (!terrain) {
