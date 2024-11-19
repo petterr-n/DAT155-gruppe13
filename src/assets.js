@@ -50,14 +50,6 @@ export const startingAssets = {
         position: {x: 4, y: 19.65, z: -3},
         target: new THREE.Vector3(40, 20, -17),
     },
-    eagle: {
-        path: 'assets/models/white_eagle.glb',
-        scale: 0.1,
-        type: 'animated',
-        position: {x: 31, y: 30, z: -60},
-        //target: new THREE.Vector3(31, 2, -60),
-        speed: 1.0,
-    },
     palm_trees: {
         path: 'assets/models/palm_trees.glb',
         scale: 2.0,
