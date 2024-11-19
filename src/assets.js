@@ -6,45 +6,45 @@ export const assets = {
 
 export const startingAssets = {
     bonfire: {
-        path: 'models/bonfire.glb',
+        path: 'assets/models/bonfire.glb',
         scale: 2.0,
         type: 'animated',
         position: {x: 40, y: 2.5, z: -17}
     },
     log1: {
-        path: 'models/log.glb',
+        path: 'assets/models/log.glb',
         scale: 0.08,
         type: 'static',
         position: {x: 38, y: 2.2, z: -16},
         target: new THREE.Vector3(40, 2.5, -17),
     },
     log2: {
-        path: 'models/log.glb',
+        path: 'assets/models/log.glb',
         scale: 0.08,
         type: 'static',
         position: {x: 40, y: 2.2, z: -14}
     },
     log3: {
-        path: 'models/log.glb',
+        path: 'assets/models/log.glb',
         scale: 0.08,
         type: 'static',
         position: {x: 42, y: 2.2, z: -16},
         target: new THREE.Vector3(40, 2.5, -17),
     },
     plane: {
-        path: 'models/plane.glb',
+        path: 'assets/models/plane.glb',
         scale: 1.0,
         type: 'static',
         position: {x: -15, y: -1.8, z: -40},
     },
     tent: {
-        path: 'models/tent.glb',
+        path: 'assets/models/tent.glb',
         scale: 4.0,
         type: 'static',
         position: {x: 40, y: -3, z: -15},
     },
     palm_trees: {
-        path: 'models/palm_trees.glb',
+        path: 'assets/models/palm_trees.glb',
         scale: 2.0,
         type: 'static',
         positions: [  // Multiple positions for palm trees, all with y = 2.0

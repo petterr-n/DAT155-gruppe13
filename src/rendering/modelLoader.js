@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 //import { getHeightAt } from './terrain.js';
-import {assets, startingAssets} from './assets.js';
+import {assets, startingAssets} from '../assets.js';
 
 const loader = new GLTFLoader();
 

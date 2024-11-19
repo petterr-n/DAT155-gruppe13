@@ -10,15 +10,15 @@ export async function createTerrain(scene) {
         const loader = new THREE.TextureLoader();
 
         // Load dirt and mountain textures
-        const grassTexture = loader.load('images/sand.png');
+        const grassTexture = loader.load('assets/images/sand.png');
         grassTexture.wrapS = THREE.RepeatWrapping;
         grassTexture.wrapT = THREE.RepeatWrapping;
 
-        const rockTexture = loader.load('images/m1.png');
+        const rockTexture = loader.load('assets/images/m1.png');
         rockTexture.wrapS = THREE.RepeatWrapping;
         rockTexture.wrapT = THREE.RepeatWrapping;
 
-        loader.load('images/heightmap4.png', async (texture) => {
+        loader.load('assets/images/heightmap4.png', async (texture) => {
             try {
                 const width = 150;
                 const height = 150;
@@ -48,8 +48,8 @@ export async function createTerrain(scene) {
                 geometry.computeVertexNormals();
 
                 // Load shaders
-                const vertexShader = await loadShader('shaders/vertexShader.glsl');
-                const fragmentShader = await loadShader('shaders/fragmentShader.glsl');
+                const vertexShader = await loadShader('src/rendering/shaders/vertexShader.glsl');
+                const fragmentShader = await loadShader('src/rendering/shaders/fragmentShader.glsl');
 
                 // Definer lysretningen (samme som i scene.js)
                 const lightDirection = new THREE.Vector3(-1, 1, 1).normalize(); // Juster etter ønsket retning

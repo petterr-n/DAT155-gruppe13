@@ -37,12 +37,12 @@ export function createScene() {
     // Skybox (if applicable, make sure it's dark-themed)
     const loader = new THREE.CubeTextureLoader();
     const skyboxTexture = loader.load([
-        'images/skybox/skybox_px.jpg',
-        'images/skybox/skybox_nx.jpg',
-        'images/skybox/skybox_py.jpg',
-        'images/skybox/skybox_ny.jpg',
-        'images/skybox/skybox_pz.jpg',
-        'images/skybox/skybox_nz.jpg'
+        'assets/images/skybox/skybox_px.jpg',
+        'assets/images/skybox/skybox_nx.jpg',
+        'assets/images/skybox/skybox_py.jpg',
+        'assets/images/skybox/skybox_ny.jpg',
+        'assets/images/skybox/skybox_pz.jpg',
+        'assets/images/skybox/skybox_nz.jpg'
     ]);
     scene.background = skyboxTexture;
 

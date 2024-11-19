@@ -7,8 +7,8 @@ async function loadShader(url) {
 
 export async function createWater(scene, terrain) {
     // Load shaders
-    const vertexShader = await loadShader('shaders/waterVertexShader.glsl');
-    const fragmentShader = await loadShader('shaders/waterFragmentShader.glsl');
+    const vertexShader = await loadShader('src/rendering/shaders/waterVertexShader.glsl');
+    const fragmentShader = await loadShader('src/rendering/shaders/waterFragmentShader.glsl');
 
     const terrainLowestPoint = 0;
     const waterHeight = terrainLowestPoint + 1; // 1 unit above the lowest point
@@ -19,7 +19,7 @@ export async function createWater(scene, terrain) {
     const waterMaterial = new THREE.ShaderMaterial({
         uniforms: {
             time: { value: 0 },
-            waterTexture: { value: new THREE.TextureLoader().load('resources/water.png') }, // Use 'waterTexture' as the uniform name
+            waterTexture: { value: new THREE.TextureLoader().load('assets/images/water.png') }, // Use 'waterTexture' as the uniform name
         },
         vertexShader: vertexShader,
         fragmentShader: fragmentShader,

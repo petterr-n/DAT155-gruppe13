@@ -10,7 +10,7 @@ let grassModel = null; // Cached 3D grass model
 async function loadGrassModel() {
     const loader = new GLTFLoader();
     return new Promise((resolve, reject) => {
-        loader.load('models/grass_patches.glb', (gltf) => {
+        loader.load('assets/models/grass_patches.glb', (gltf) => {
             const model = gltf.scene;
             model.scale.set(2, 1, 2); // Adjust scale of the 3D model
             resolve(model); // Assuming the model's scene is what you need
@@ -20,7 +20,7 @@ async function loadGrassModel() {
 
 // Global billboard setup (geometry and material)
 const billboardGeometry = new THREE.PlaneGeometry(2, 2); // Adjust dimensions
-const grassTexture = new THREE.TextureLoader().load('images/grass.png');
+const grassTexture = new THREE.TextureLoader().load('assets/images/grass.png');
 grassTexture.wrapS = THREE.RepeatWrapping; // Enable horizontal tiling
 grassTexture.wrapT = THREE.RepeatWrapping; // Enable vertical tiling
 grassTexture.repeat.set(2, 2);  // Use grass.png

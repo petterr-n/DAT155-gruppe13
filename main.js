@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import { createScene } from './src/scene.js';
-import { createCamera, initKeyControls, updateCamera } from './src/camera.js';
-import { createTerrain } from './src/terrain.js';
-import { loadModel, loadStartingAssets, updateAnimations } from './src/modelLoader.js';
-import { createGrassField, updateGrassVisibility } from "./src/renderingModels";
-import { addMouseEventListener, checkCameraCollision } from "./src/raycasting";
-import MouseLookController from "./src/MouseLookController";
+import { createScene } from './src/rendering/scene.js';
+import { createCamera, initKeyControls, updateCamera } from './src/utils/camera.js';
+import { createTerrain } from './src/rendering/terrain.js';
+import { loadModel, loadStartingAssets, updateAnimations } from './src/rendering/modelLoader.js';
+import { createGrassField, updateGrassVisibility } from "./src/rendering/renderingModels";
+import { addMouseEventListener, checkCameraCollision } from "./src/rendering/raycasting";
+import MouseLookController from "./src/utils/MouseLookController";
 import { addBackgroundSound } from "./src/sound";
 import { createWater } from "./src/environment/water";
 import { createRain } from "./src/environment/rain";

@@ -9,7 +9,7 @@ export function addBackgroundSound(camera) {
 
     // Function to start the sound after user interaction
     function startBackgroundSound() {
-        audioLoader.load('sound/jungle-nature.mp3', function(buffer) {
+        audioLoader.load('assets/sound/jungle-nature.mp3', function(buffer) {
             backgroundSound.setBuffer(buffer);
             backgroundSound.setLoop(true);
             backgroundSound.setVolume(0.5);

@@ -5,7 +5,7 @@ function createClouds(scene, terrain, camera) {
     const cloudCount = 200;  // Number of clouds
     const cloudSize = 30;  // Base size of each cloud
     const maxHeight = 100; // Height above terrain where clouds will float
-    const cloudTexture = new THREE.TextureLoader().load('resources/cloud.png');  // Load cloud texture
+    const cloudTexture = new THREE.TextureLoader().load('assets/images/cloud.png');  // Load cloud texture
     cloudTexture.magFilter = THREE.LinearFilter;
     cloudTexture.minFilter = THREE.LinearFilter;
 
