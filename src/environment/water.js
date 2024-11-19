@@ -13,7 +13,7 @@ export async function createWater(scene, terrain) {
     const terrainLowestPoint = 0;
     const waterHeight = terrainLowestPoint + 1; // 1 unit above the lowest point
 
-    const waterGeometry = new THREE.PlaneGeometry(500, 500);
+    const waterGeometry = new THREE.PlaneGeometry(1500, 1500);
     waterGeometry.rotateX(-Math.PI / 2); // Make sure the plane is horizontal
 
     const waterMaterial = new THREE.ShaderMaterial({

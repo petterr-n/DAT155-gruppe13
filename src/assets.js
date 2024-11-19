@@ -89,12 +89,24 @@ export const startingAssets = {
             { x: -17.0, y: 2.0, z: 24.0 },
             { x: -13.5, y: 2.0, z: 75.0 },
             { x: -16.5, y: 2.0, z: 65.5 },
-            { x: -19.0, y: 2.0, z: 56.0 }
+            { x: -19.0, y: 2.0, z: 56.0 },
+            { x: -44, y: 2.0, z: 12 },
+            { x: -50, y: 2.0, z: 3 },
+            { x: -50, y: 2.0, z: 6 },
+            { x: -41, y: 2.0, z: 24 },
+            { x: -26, y: 2.0, z: 13 },
+            { x: -57, y: 2.0, z: 11 },
+            { x: -60, y: 2.0, z: 33 },
+            { x: -40, y: 2.0, z: 9 },
         ],
         rotation: {
             y: () => THREE.MathUtils.randFloat(0, Math.PI * 2) // Random rotation around Y-axis
         }
     },
-
-
+    fern_grass: {
+        path: 'assets/models/fern_grass.glb',
+        scale: 100,
+        type: 'static',
+        position: {x: 24, y: 2, z: -42},
+    },
 };
