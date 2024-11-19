@@ -3,11 +3,10 @@ import * as THREE from 'three';
 export function createScene() {
     const scene = new THREE.Scene();
 
-    // Definer lysretningen (juster x, y, z etter ønsket retning)
+    // Light setup with reduced intensity
     const lightDirection = new THREE.Vector3(1, 1, 1).normalize();
-
-    const lightDistance = 1000; // Juster avstanden hvis nødvendig
-    const light = new THREE.DirectionalLight(0xffffff, 1); // Juster intensiteten hvis ønskelig
+    const light = new THREE.DirectionalLight(0xffffff, 0.3); // Reduced intensity
+    const lightDistance = 1000;
     light.position.set(
         -lightDirection.x * lightDistance,
         -lightDirection.y * lightDistance,
@@ -16,7 +15,7 @@ export function createScene() {
     light.target.position.set(0, 0, 0);
     light.castShadow = true;
 
-    // Juster skyggens innstillinger
+    // Adjust shadows for the darker scene
     light.shadow.mapSize.width = 2048;
     light.shadow.mapSize.height = 2048;
     light.shadow.camera.near = 0.5;
@@ -26,12 +25,16 @@ export function createScene() {
     light.shadow.camera.top = 500;
     light.shadow.camera.bottom = -500;
 
-    //light.name = 'DirectionalLight';
-
     scene.add(light);
     scene.add(light.target);
 
-    // Skybox
+    // Add dark ambient light
+    const ambientLight = new THREE.AmbientLight(0x222222, 0.1);  // Dark ambient light
+    scene.add(ambientLight);
+
+    scene.background = new THREE.Color(0x222222);  // Dark gray background
+
+    // Skybox (if applicable, make sure it's dark-themed)
     const loader = new THREE.CubeTextureLoader();
     const skyboxTexture = loader.load([
         'images/skybox/skybox_px.jpg',

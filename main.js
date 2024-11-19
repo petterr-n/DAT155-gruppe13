@@ -2,13 +2,16 @@ import * as THREE from 'three';
 import { createScene } from './src/scene.js';
 import { createCamera, initKeyControls, updateCamera } from './src/camera.js';
 import { createTerrain } from './src/terrain.js';
-import {loadModel, updateAnimations} from './src/modelLoader.js';
+import {loadModel, loadStartingAssets, updateAnimations} from './src/modelLoader.js';
 import {createGrassField, updateGrassVisibility} from "./src/renderingModels";
 import { addMouseEventListener, checkCameraCollision } from "./src/raycasting";
 import MouseLookController from "./src/MouseLookController";
 import { addBackgroundSound } from "./src/sound";
 import { VRButton } from "./src/VRButton";
 import { Vector3 } from "three";
+import {createWater} from "./src/environment/water";
+import {createRain} from "./src/environment/rain";
+import {createClouds} from "./src/environment/cloud";
 
 
 // Create scene, camera, and renderer
@@ -44,6 +47,13 @@ const modelSelect = document.getElementById('modelSelect');
 // Add terrain
 const terrain = await createTerrain(scene);
 console.log(terrain);
+const water = await createWater(scene, terrain);
+const updateRain = createRain(scene, terrain);
+createClouds(scene, terrain);
+loadStartingAssets(scene);
+
+// Optional: Set the renderer's clear color to black as well
+renderer.setClearColor(0x000000, 1);
 
 //await createGrassField(scene, camera, terrain);
 
@@ -57,18 +67,18 @@ initKeyControls();
 addMouseEventListener(scene, camera, modelSelect);
 
 // Pointer Lock setup
-document.body.addEventListener('click', () => {
-    renderer.domElement.requestPointerLock();
-});
-
-// Handle pointer lock state change
-document.addEventListener('pointerlockchange', () => {
-    if (document.pointerLockElement === renderer.domElement) {
-        console.log("Pointer locked!");
-    } else {
-        console.log("Pointer unlocked!");
-    }
-});
+// document.body.addEventListener('click', () => {
+//     renderer.domElement.requestPointerLock();
+// });
+//
+// // Handle pointer lock state change
+// document.addEventListener('pointerlockchange', () => {
+//     if (document.pointerLockElement === renderer.domElement) {
+//         console.log("Pointer locked!");
+//     } else {
+//         console.log("Pointer unlocked!");
+//     }
+// });
 
 // Mouse movement listener
 document.addEventListener('mousemove', (event) => {
@@ -81,9 +91,9 @@ document.addEventListener('mousemove', (event) => {
 });
 
 // Raycaster for checking terrain height
-const raycaster = new THREE.Raycaster();
-const downDirection = new THREE.Vector3(0, -1, 0);
-const cameraMinHeightAboveTerrain = 2;
+// const raycaster = new THREE.Raycaster();
+// const downDirection = new THREE.Vector3(0, -1, 0);
+// const cameraMinHeightAboveTerrain = 2;
 
 // Function to handle VR movement
 function VRMovement() {
@@ -142,6 +152,12 @@ function animate() {
         // Update user height to stay above terrain
         //updateUserHeightAboveTerrain();
        // updateGrassVisibility(camera, scene);
+
+        // Water physics
+        if (water.material.uniforms.time) {
+            water.material.uniforms.time.value += 0.001; // Adjust speed of the water movement
+        }
+        updateRain();
 
         // Update camera
         updateCamera(camera);

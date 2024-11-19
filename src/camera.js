@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 
 // Variabler for kameraets bevegelse
-const movementSpeed = 0.5;
+const movementSpeed = 0.2;
 const rotationSpeed = 0.05;
 const keys = {};
 
 export function createCamera() {
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-    camera.position.set(100, 10, -115); // startpos 200,10,230
+    camera.position.set(35, 10, -64); // startpos 200,10,230
     camera.lookAt(0, 2, 0);
 
     return camera;

@@ -59,7 +59,7 @@ export function checkCameraCollision(scene, camera) {
         const terrainHeight = intersects[0].point.y;
 
         camera.position.y = terrainHeight + cameraMinHeightAboveTerrain;
-        console.log(`Camera Y Position: ${camera.position.y}, Terrain Height: ${terrainHeight}`);
+        //console.log(`Camera Y Position: ${camera.position.y}, Terrain Height: ${terrainHeight}`);
 
 
     }
