@@ -18,7 +18,7 @@ export async function createWater(scene, terrain) {
     const waterMaterial = new THREE.ShaderMaterial({
         uniforms: {
             time: { value: 0 },
-            waterTexture: { value: new THREE.TextureLoader().load('assets/images/pool_water.jpg') },
+            waterTexture: { value: new THREE.TextureLoader().load('assets/images/water.jpg') },
         },
         vertexShader: vertexShader,
         fragmentShader: fragmentShader,
