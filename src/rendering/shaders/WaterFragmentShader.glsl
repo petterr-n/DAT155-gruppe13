@@ -1,4 +1,3 @@
-// Fragment Shader
 uniform sampler2D waterTexture;
 uniform float time;
 varying vec2 vUv;
