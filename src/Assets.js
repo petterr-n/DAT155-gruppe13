@@ -54,7 +54,7 @@ export const startingAssets = {
         path: 'assets/models/palm_trees.glb',
         scale: 2.0,
         type: 'static',
-        positions: [  // Multiple positions for palm trees, all with y = 2.0
+        positions: [
             { x: 20, y: 2.0, z: 40 },
             { x: 25, y: 2.0, z: 45 },
             { x: 15, y: 2.0, z: 55 },
@@ -118,14 +118,14 @@ export const startingAssets = {
             { x: -40, y: 2.0, z: 9 },
         ],
         rotation: {
-            y: () => THREE.MathUtils.randFloat(0, Math.PI * 2) // Random rotation around Y-axis
+            y: () => THREE.MathUtils.randFloat(0, Math.PI * 2)
         }
     },
     fern_grass: {
         path: 'assets/models/fern_grass.glb',
         scale: 100,
         type: 'static',
-        positions: [  // Randomized positions for palm trees, all with y = 2.0
+        positions: [
             { x: 25, y: 2.5, z: 45 },
             { x: -44, y: 2.5, z: 12 },
             { x: -17.0, y: 2.5, z: 24.0 },

@@ -1,16 +1,13 @@
-// File: vrHandler.js
 import * as THREE from 'three';
 import { Vector3 } from 'three';
 import { VRButton } from "./VRButton";
 
 export function enableVR(renderer, user, camera) {
-    // Enable VR support
     renderer.xr.enabled = true;
     document.body.appendChild(VRButton.createButton(renderer));
 
-    // Add event listener for VR session start to set the initial camera position
     renderer.xr.addEventListener('sessionstart', () => {
-        user.position.set(-24, 5, -42); // Set user group to start position for VR mode
+        user.position.set(-24, 5, -42);
     });
 }
 
@@ -22,12 +19,10 @@ export function VRMovement(renderer, camera) {
         if (gamepad) {
             const x = gamepad.axes[2];
             const y = gamepad.axes[3];
-            const movement = new Vector3(x * speed, 0, y * speed); // Positive z for forward movement
+            const movement = new Vector3(x * speed, 0, y * speed);
 
-            // Apply camera's rotation to the movement vector to make it relative to the current orientation
             movement.applyQuaternion(camera.quaternion);
 
-            // Handle vertical movement
             if (gamepad.buttons[4].pressed) {
                 movement.y += 1 * speed;
             } else if (gamepad.buttons[5].pressed) {

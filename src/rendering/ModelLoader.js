@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import {assets, startingAssets} from '../assets';
+import {assets, startingAssets} from '../Assets.js';
 
 const loader = new GLTFLoader();
 
