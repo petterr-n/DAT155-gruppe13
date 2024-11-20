@@ -7,4 +7,6 @@ npm install --save three
 npm install --save-dev vite
 
 # run
-npx vite
+"npx vite" from terminal, 
+go to "localhost:5173"
+
