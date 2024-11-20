@@ -7,8 +7,8 @@ async function loadShader(url) {
 
 export async function createWater(scene, terrain) {
     // Load shaders
-    const vertexShader = await loadShader('src/rendering/shaders/waterVertexShader.glsl');
-    const fragmentShader = await loadShader('src/rendering/shaders/waterFragmentShader.glsl');
+    const vertexShader = await loadShader('src/rendering/shaders/WaterVertexShader.glsl');
+    const fragmentShader = await loadShader('src/rendering/shaders/WaterFragmentShader.glsl');
 
     const terrainLowestPoint = 0;
     const waterHeight = terrainLowestPoint + 1; // 1 unit above the lowest point

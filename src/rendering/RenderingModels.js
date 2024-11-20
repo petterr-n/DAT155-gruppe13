@@ -1,33 +1,19 @@
 import * as THREE from 'three';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { Frustum, Matrix4, Vector3 } from 'three';
-import {getHeightAt} from "./modelLoader";
+import {getHeightAt} from "./ModelLoader";
 
-let grassObjects = []; // Stores the grass objects (billboards and 3D models)
-let grassModel = null; // Cached 3D grass model
-
-// Load the GLB model of the grass (3D model)
-async function loadGrassModel() {
-    const loader = new GLTFLoader();
-    return new Promise((resolve, reject) => {
-        loader.load('assets/models/grass_patches.glb', (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(2, 1, 2); // Adjust scale of the 3D model
-            resolve(model); // Assuming the model's scene is what you need
-        }, undefined, reject);
-    });
-}
+let grassObjects = [];
+let grassModel = null;
 
 // Global billboard setup (geometry and material)
-const billboardGeometry = new THREE.PlaneGeometry(2, 2); // Adjust dimensions
+const billboardGeometry = new THREE.PlaneGeometry(2, 2);
 const grassTexture = new THREE.TextureLoader().load('assets/images/grass.png');
-grassTexture.wrapS = THREE.RepeatWrapping; // Enable horizontal tiling
-grassTexture.wrapT = THREE.RepeatWrapping; // Enable vertical tiling
-grassTexture.repeat.set(2, 2);  // Use grass.png
+grassTexture.wrapS = THREE.RepeatWrapping;
+grassTexture.wrapT = THREE.RepeatWrapping;
+grassTexture.repeat.set(2, 2);
 const billboardMaterial = new THREE.MeshBasicMaterial({
     map: grassTexture,
     transparent: true,
-    side: THREE.DoubleSide, // Visible from both sides
+    side: THREE.DoubleSide,
 });
 
 // Function to generate grass field
@@ -47,9 +33,8 @@ export async function createGrassField(scene, camera, terrain) {
     const gridSpacing = 15;
     const randomRange = gridSpacing * 0.9;
 
-    // Calculate camera frustum
-    const frustum = new Frustum();
-    const matrix = new Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    const frustum = new THREE.Frustum();
+    const matrix = new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     frustum.setFromProjectionMatrix(matrix);
 
     // Loop through potential grass positions
@@ -61,19 +46,18 @@ export async function createGrassField(scene, camera, terrain) {
             const posX = x + offsetX;
             const posZ = z + offsetZ;
 
-            const y = getHeightAt(posX, posZ, terrain); // Terrain height
-            if (y > 1) { // Avoid placing grass below or above certain height
+            const y = getHeightAt(posX, posZ, terrain);
+            if (y > 1) {
                 continue;
             }
 
-            const position = new Vector3(posX, y, posZ);
+            const position = new THREE.Vector3(posX, y, posZ);
 
             // Check if position is in the camera's frustum
             if (frustum.containsPoint(position)) {
-                // Add a billboard initially
                 const billboard = new THREE.Mesh(billboardGeometry, billboardMaterial);
                 billboard.position.set(posX, y, posZ);
-                billboard.lookAt(camera.position); // Always face the camera
+                billboard.lookAt(camera.position);
                 scene.add(billboard);
 
                 grassObjects.push({
@@ -93,21 +77,20 @@ export function updateGrassVisibility(camera, scene) {
 
         // If close, switch to 3D grass
         if (distanceToCamera < 120) {
-            if (grassObject.type !== '3d' && grassModel) { // If not already 3D
+            if (grassObject.type !== '3d' && grassModel) {
                 const highQualityGrass = grassModel.clone();
-                highQualityGrass.position.copy(grassObject.object.position); // Maintain position
+                highQualityGrass.position.copy(grassObject.object.position);
                 scene.add(highQualityGrass);
-                scene.remove(grassObject.object); // Remove billboard
-                grassObjects[i] = { type: '3d', object: highQualityGrass }; // Update to 3D
+                scene.remove(grassObject.object);
+                grassObjects[i] = { type: '3d', object: highQualityGrass };
             }
         } else {
-            // If far, switch back to billboard
             if (grassObject.type === '3d') {
                 const billboard = new THREE.Mesh(billboardGeometry, billboardMaterial);
-                billboard.position.copy(grassObject.object.position); // Maintain position
+                billboard.position.copy(grassObject.object.position);
                 scene.add(billboard);
-                scene.remove(grassObject.object); // Remove 3D model
-                grassObjects[i] = { type: 'billboard', object: billboard }; // Update to billboard
+                scene.remove(grassObject.object);
+                grassObjects[i] = { type: 'billboard', object: billboard };
             }
         }
     }
