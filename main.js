@@ -1,16 +1,16 @@
 import * as THREE from 'three';
-import { createScene } from './src/rendering/scene.js';
-import { createCamera, initKeyControls, updateCamera } from './src/utils/camera.js';
-import { createTerrain } from './src/rendering/terrain.js';
-import { loadModel, loadStartingAssets, updateAnimations } from './src/rendering/modelLoader.js';
+import { createScene } from './src/rendering/scene';
+import { createCamera, initKeyControls, updateCamera } from './src/utils/Camera';
+import { createTerrain } from './src/rendering/terrain';
+import { loadModel, loadStartingAssets, updateAnimations } from './src/rendering/modelLoader';
 import { createGrassField, updateGrassVisibility } from "./src/rendering/renderingModels";
 import { addMouseEventListener, checkCameraCollision } from "./src/rendering/raycasting";
 import MouseLookController from "./src/utils/MouseLookController";
-import { addBackgroundSound } from "./src/sound";
-import { createWater } from "./src/environment/water";
-import { createRain } from "./src/environment/rain";
-import { createClouds } from "./src/environment/cloud";
-import { enableVR, VRMovement, updateUserHeightAboveTerrain } from './src/VR/vrHandler.js';
+import { addBackgroundSound } from "./src/Sound";
+import { createWater } from "./src/environment/Water";
+import { createRain } from "./src/environment/Rain";
+import { createClouds } from "./src/environment/Cloud";
+import { enableVR, VRMovement, updateUserHeightAboveTerrain } from './src/VR/VRHandler';
 
 // Create scene, camera, and renderer
 const scene = createScene();
