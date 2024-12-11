@@ -45,21 +45,6 @@ function createClouds(scene, terrain, camera) {
         scene.add(cloudGroup);
         clouds.push(cloudGroup);
     }
-
-    function updateClouds() {
-        clouds.forEach((cloudGroup) => {
-            cloudGroup.position.x += Math.random() * 0.1 + 0.02;
-            cloudGroup.position.z += Math.random() * 0.1 + 0.02;
-
-            if (cloudGroup.position.x > 250) cloudGroup.position.x = -250;
-            if (cloudGroup.position.z > 250) cloudGroup.position.z = -250;
-            if (cloudGroup.position.x < -250) cloudGroup.position.x = 250;
-            if (cloudGroup.position.z < -250) cloudGroup.position.z = 250;
-
-            cloudGroup.lookAt(camera.position);
-        });
-    }
-    return updateClouds;
 }
 
 // Function to get height at a specific point

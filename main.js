@@ -3,7 +3,7 @@ import { createScene } from './src/rendering/scene';
 import { createCamera, initKeyControls, updateCamera } from './src/utils/Camera';
 import { createTerrain } from './src/rendering/terrain';
 import { loadStartingAssets, updateAnimations } from './src/rendering/modelLoader';
-import { addMouseEventListener, checkCameraCollision } from "./src/rendering/raycasting";
+import { checkCameraCollision } from "./src/rendering/raycasting";
 import MouseLookController from "./src/utils/MouseLookController";
 import { addBackgroundSound } from "./src/Sound";
 import { createWater } from "./src/environment/Water";
@@ -27,7 +27,7 @@ const user = new THREE.Group();
 user.add(camera);
 scene.add(user);
 
-enableVR(renderer, user, camera);
+enableVR(renderer, user);
 
 const modelSelect = document.getElementById('modelSelect');
 
@@ -47,8 +47,6 @@ addBackgroundSound(camera);
 // Initialize keypresses to control the camera
 initKeyControls();
 
-// on-click event listener
-addMouseEventListener(scene, camera, modelSelect);
 
 // Pointer Lock setup
 document.body.addEventListener('click', () => {

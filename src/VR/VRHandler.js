@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Vector3 } from 'three';
 import { VRButton } from "./VRButton";
 
-export function enableVR(renderer, user, camera) {
+export function enableVR(renderer, user) {
     renderer.xr.enabled = true;
     document.body.appendChild(VRButton.createButton(renderer));
 
